@@ -1,12 +1,17 @@
 package atlas.core;
 
-import org.lwjgl.glfw.GLFW;
-
 import atlas.events.Event;
+import atlas.events.EventDispatcher;
+import atlas.events.EventListener;
+import atlas.events.types.WindowCloseEvent;
 
-public class Application {
+public class Application implements EventListener {
 
 	private static Application instance = null;
+	
+	public static Application getInstance() {
+		return instance;
+	}
 	
 	private Window window;
 	private LayerStack layerStack;
@@ -39,7 +44,12 @@ public class Application {
 	}
 	
 	public void onEvent(Event e) {
+		EventDispatcher dispatcher = new EventDispatcher(e);
+		dispatcher.dispatch(Event.EventType.WindowClose, (Event event) -> (onWindowClose((WindowCloseEvent) event)));
 		
+		for ( Layer layer : layerStack.getLayers() ) {
+			layer.onEvent(e);
+		}
 	}
 	
 	public void run() {
@@ -49,8 +59,6 @@ public class Application {
 			update();
 			render();
 			
-			if( window.shouldClose())
-				break;
 		}
 		
 		window.dispose();
@@ -74,6 +82,11 @@ public class Application {
 		window.swapBuffers();
 	}
 	
+	private boolean onWindowClose(WindowCloseEvent e) {
+		isRunning = false;
+		return true;
+	}
+	
 	public long getTime() {
 	    return System.nanoTime() / 1000000;
 	}
@@ -84,5 +97,9 @@ public class Application {
 	    lastFrame = time;
 	         
 	    return delta;
+	}
+	
+	public Window getWindow() {
+		return window;
 	}
 }

@@ -2,6 +2,8 @@ package atlas.core;
 
 import org.lwjgl.glfw.*;
 
+import atlas.events.types.WindowCloseEvent;
+
 public class Window {
 
 	private long window;
@@ -36,6 +38,11 @@ public class Window {
 	
 	public void update() {
 		GLFW.glfwPollEvents();
+		
+		if (GLFW.glfwWindowShouldClose(window)) {
+			WindowCloseEvent windowCloseEvnet = new WindowCloseEvent();
+			Application.getInstance().onEvent(windowCloseEvnet);
+		}
 	}
 	
 	public void swapBuffers() {
@@ -46,7 +53,7 @@ public class Window {
 		
 	}
 	
-	public boolean shouldClose() {
-		return GLFW.glfwWindowShouldClose(window);
+	public long getWindow() {
+		return window;
 	}
 }

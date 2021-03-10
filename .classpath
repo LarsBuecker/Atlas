@@ -7,5 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/LWJGL 3"/>
+	<classpathentry kind="lib" path="C:/Users/larsb/Downloads/jogl/jogl-all.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
