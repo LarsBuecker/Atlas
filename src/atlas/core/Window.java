@@ -1,6 +1,5 @@
 package atlas.core;
 
-import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
@@ -14,6 +13,7 @@ import atlas.events.types.MousePressedEvent;
 import atlas.events.types.MouseReleasedEvent;
 import atlas.events.types.WindowCloseEvent;
 import atlas.events.types.WindowResizeEvent;
+import atlas.math.Vec2f;
 import atlas.opengl.OpenGLContext;
 
 public class Window {
@@ -73,14 +73,14 @@ public class Window {
 		mouseButtonCallback = new GLFWMouseButtonCallback() {
 			@Override
 			public void invoke(long window, int button, int action, int mods) {
-				Vector2f pos = Input.getInstance().getMousePosition();
+				Vec2f pos = Input.getInstance().getMousePosition();
 				
 				if ( action == GLFW.GLFW_PRESS ) {
-					MousePressedEvent mousePressedEvent = new MousePressedEvent(button, (int) pos.x, (int) pos.y);
+					MousePressedEvent mousePressedEvent = new MousePressedEvent(button, (int) pos.getX(), (int) pos.getY());
 					Application.getInstance().onEvent(mousePressedEvent);
 				}
 				if ( action == GLFW.GLFW_PRESS ) {
-					MouseReleasedEvent mouseReleasedEvent = new MouseReleasedEvent(button, (int) pos.x, (int) pos.y);
+					MouseReleasedEvent mouseReleasedEvent = new MouseReleasedEvent(button, (int) pos.getX(), (int) pos.getY());
 					Application.getInstance().onEvent(mouseReleasedEvent);
 				}
 			}
@@ -132,5 +132,21 @@ public class Window {
 	
 	public long getWindow() {
 		return window;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 }

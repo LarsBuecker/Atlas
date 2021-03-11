@@ -2,9 +2,10 @@ package atlas.core;
 
 import java.nio.DoubleBuffer;
 
-import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
+
+import atlas.math.Vec2f;
 
 public class Input {
 
@@ -33,22 +34,22 @@ public class Input {
 		return state == GLFW.GLFW_PRESS;
 	}
 	
-	public Vector2f getMousePosition() {
+	public Vec2f getMousePosition() {
 		long window = Application.getInstance().getWindow().getWindow();
 		DoubleBuffer xBuffer = BufferUtils.createDoubleBuffer(1);
 		DoubleBuffer yBuffer = BufferUtils.createDoubleBuffer(1);
 		GLFW.glfwGetCursorPos(window, xBuffer, yBuffer);
 		double x = xBuffer.get(0);
 		double y = yBuffer.get(0);
-		return new Vector2f((float) x, (float) y);
+		return new Vec2f((float) x, (float) y);
 	}
 	
 	public float getMouseX() {
-		return getMousePosition().x;
+		return getMousePosition().getX();
 	}
 	
 	public float getMouseY() {
-		return getMousePosition().y;
+		return getMousePosition().getY();
 	}
 	
 }
