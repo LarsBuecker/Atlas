@@ -1,6 +1,5 @@
 package atlas;
 
-import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 
 import atlas.core.Layer;
