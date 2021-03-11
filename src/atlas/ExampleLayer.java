@@ -1,6 +1,10 @@
 package atlas;
 
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
+
 import atlas.core.Layer;
+import atlas.core.Log;
 import atlas.events.Event;
 
 public class ExampleLayer extends Layer {
@@ -11,8 +15,8 @@ public class ExampleLayer extends Layer {
 
 	@Override
 	public void OnAttach() {
-		System.out.println("Example Layer Attached");
-		
+		Log.clientLog("Example Layer Attached");
+		GL11.glClearColor(0.2f, 0.2f, 0.2f, 0);
 	}
 
 	@Override
@@ -30,7 +34,7 @@ public class ExampleLayer extends Layer {
 	@Override
 	public void onRender() {
 		// TODO Auto-generated method stub
-		
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 	}
 
 	@Override
@@ -42,7 +46,7 @@ public class ExampleLayer extends Layer {
 	@Override
 	public void onEvent(Event event) {
 		// TODO Auto-generated method stub
-		System.out.println(event);
+		Log.clientLog(event.toString());
 	}
 	
 }

@@ -43,4 +43,12 @@ public class Input {
 		return new Vector2f((float) x, (float) y);
 	}
 	
+	public float getMouseX() {
+		return getMousePosition().x;
+	}
+	
+	public float getMouseY() {
+		return getMousePosition().y;
+	}
+	
 }
