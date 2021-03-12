@@ -3,6 +3,7 @@ package atlas.opengl;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GLCapabilities;
 
 import atlas.core.Log;
 
@@ -25,5 +26,11 @@ public class OpenGLContext {
 	
 	public void swapBuffers() {
 		GLFW.glfwSwapBuffers(windowHandle);
+		
+		
+	}
+	
+	public static GLCapabilities getGLCapabilities() {
+		return GL.getCapabilities();
 	}
 }
