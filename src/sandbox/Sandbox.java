@@ -1,4 +1,4 @@
-package atlas;
+package sandbox;
 
 import atlas.core.Application;
 
