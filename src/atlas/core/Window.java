@@ -141,6 +141,7 @@ public class Window {
 
 	public void setTitle(String title) {
 		this.title = title;
+		GLFW.glfwSetWindowTitle(window, title);
 	}
 
 	public int getWidth() {

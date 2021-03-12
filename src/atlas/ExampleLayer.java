@@ -3,10 +3,12 @@ package atlas;
 import java.util.ArrayList;
 import java.util.List;
 
+import atlas.core.Application;
 import atlas.core.Input;
 import atlas.core.KeyCodes;
 import atlas.core.Layer;
 import atlas.core.Log;
+import atlas.core.Window;
 import atlas.events.Event;
 import atlas.math.Mat4f;
 import atlas.math.Vec3f;
@@ -31,6 +33,8 @@ public class ExampleLayer extends Layer {
 	
 	private Mat4f transform;
 	private Vec3f rot = new Vec3f();
+	
+	private int fps;
 
 	public ExampleLayer() {
 		super("Example Layer");
@@ -104,6 +108,13 @@ public class ExampleLayer extends Layer {
 		if (input.isKeyPressed(KeyCodes.AL_KEY_S)) {
 			camera.setPosition(new Vec3f(camera.getPosition().getX(), camera.getPosition().getY(), camera.getPosition().getZ() + delta * -0.01f));
 		}
+		
+		if(fps>10) {
+			Window window = Application.getInstance().getWindow();
+			window.setTitle("Atlas | Sandbox | OpenGL | FPS: " + (int) (1 / (delta / 1000)));
+			fps = 0;
+		}
+		fps++;
 	}
 
 	@Override
