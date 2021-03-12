@@ -10,5 +10,4 @@ public class KeyEvent extends Event {
 		super(type);
 		this.keycode = keycode;
 	}
-
 }

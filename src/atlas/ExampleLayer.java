@@ -3,6 +3,8 @@ package atlas;
 import java.util.ArrayList;
 import java.util.List;
 
+import atlas.core.Input;
+import atlas.core.KeyCodes;
 import atlas.core.Layer;
 import atlas.core.Log;
 import atlas.events.Event;
@@ -25,6 +27,7 @@ public class ExampleLayer extends Layer {
 	private VertexArray vertexArray;
 	private Shader shader;
 	private Camera camera;
+	private Input input = Input.getInstance();
 	
 	private Mat4f transform;
 	private Vec3f rot = new Vec3f();
@@ -34,11 +37,11 @@ public class ExampleLayer extends Layer {
 		
 		vertexArray = new VertexArray();
 		
-		float vertices[] = {
-				-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
-				 0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
-				 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
-		};
+//		float vertices[] = {
+//				-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
+//				 0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
+//				 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
+//		};
 		
 		float square[] = {
 			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
@@ -59,7 +62,7 @@ public class ExampleLayer extends Layer {
 		vertexBuffer.setBufferLayout(layout);
 		vertexArray.addVertexBuffer(vertexBuffer);
 		
-		int indices[] = { 0, 1, 2 };
+//		int indices[] = { 0, 1, 2 };
 		int indices1[] = { 0, 1, 2, 2, 3, 0 };
 		IndexBuffer indexBuffer = new IndexBuffer(indices1, indices1.length);
 		vertexArray.setIndexBuffer(indexBuffer);
@@ -88,6 +91,19 @@ public class ExampleLayer extends Layer {
 		rot.setY(rot.getY() + delta * 0.04f);
 		rot.setZ(rot.getZ() + delta * 0.06f);
 		transform.Rotation(rot);
+		
+		if (input.isKeyPressed(KeyCodes.AL_KEY_A)) {
+			camera.setPosition(new Vec3f(camera.getPosition().getX() + delta * -0.01f, camera.getPosition().getY(), camera.getPosition().getZ()));
+		}
+		if (input.isKeyPressed(KeyCodes.AL_KEY_D)) {
+			camera.setPosition(new Vec3f(camera.getPosition().getX() + delta * 0.01f, camera.getPosition().getY(), camera.getPosition().getZ()));
+		}
+		if (input.isKeyPressed(KeyCodes.AL_KEY_W)) {
+			camera.setPosition(new Vec3f(camera.getPosition().getX(), camera.getPosition().getY(), camera.getPosition().getZ() + delta * 0.01f));
+		}
+		if (input.isKeyPressed(KeyCodes.AL_KEY_S)) {
+			camera.setPosition(new Vec3f(camera.getPosition().getX(), camera.getPosition().getY(), camera.getPosition().getZ() + delta * -0.01f));
+		}
 	}
 
 	@Override

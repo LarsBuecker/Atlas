@@ -33,6 +33,7 @@ public class Camera {
 		viewMatrix.Rotation(new Vec3f(0, 0, (float) Math.toRadians(pitch)));
 		Vec3f pos = new Vec3f(-position.getX(), -position.getY(), -position.getZ());
 		viewMatrix.Translation(pos);
+		viewProjectionMatrix = projectionMatrix.mul(viewMatrix);
 	}
 	
 	private void calcualteProjection() {
