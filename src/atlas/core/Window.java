@@ -6,6 +6,7 @@ import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowCloseCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
+import org.lwjgl.opengl.GL11;
 
 import atlas.events.types.KeyPressedEvent;
 import atlas.events.types.KeyReleasedEvent;
@@ -118,7 +119,7 @@ public class Window {
 	
 	
 	public void update() {
-		
+		GL11.glViewport(0, 0, width, height);
 		GLFW.glfwPollEvents();
 	}
 	

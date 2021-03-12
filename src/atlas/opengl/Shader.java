@@ -26,10 +26,15 @@ import static org.lwjgl.opengl.GL20.glUniform4f;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 
+import atlas.core.Log;
 import atlas.math.Mat4f;
 import atlas.math.Vec2f;
 import atlas.math.Vec3f;
@@ -38,6 +43,31 @@ import atlas.math.Vec4f;
 public class Shader {
 	
 	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
+	
+	private static final String LOCATION = "res/shader/";
+	
+	public static String loadShader(String fileName) {
+		StringBuilder shaderSource = new StringBuilder();
+		BufferedReader shaderReader = null;
+		
+		try {
+			shaderReader = new BufferedReader(new FileReader(LOCATION + fileName));
+			String line;
+			while((line = shaderReader.readLine()) != null) {
+				shaderSource.append(line).append("\n");
+			}
+			shaderReader.close();
+			Log.coreLog("Shader loaded: " + fileName);
+		} catch (FileNotFoundException e) {
+			System.err.println("File: " + fileName + " not found at " + LOCATION);
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("Failed to read shaderfile: " + fileName);
+			e.printStackTrace();
+		}
+		
+		return shaderSource.toString();
+	}
 	
 	private int rendererId;
 

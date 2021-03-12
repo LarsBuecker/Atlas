@@ -25,6 +25,9 @@ public class ExampleLayer extends Layer {
 	private VertexArray vertexArray;
 	private Shader shader;
 	private Camera camera;
+	
+	private Mat4f transform;
+	private Vec3f rot = new Vec3f();
 
 	public ExampleLayer() {
 		super("Example Layer");
@@ -37,7 +40,14 @@ public class ExampleLayer extends Layer {
 				 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 		
-		VertexBuffer vertexBuffer = new VertexBuffer(vertices, 3);
+		float square[] = {
+			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
+		 	 0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
+		 	 0.5f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f,
+		 	-0.5f,  0.5f, 0.0f, 0.3f, 0.8f, 0.5f, 1.0f
+		};
+		
+		VertexBuffer vertexBuffer = new VertexBuffer(square, 3);
 		
 		BufferElement position = new BufferElement(ShaderDataType.Float3, "a_Position", false);
 		BufferElement color = new BufferElement(ShaderDataType.Float4, "a_Color", false);
@@ -50,40 +60,16 @@ public class ExampleLayer extends Layer {
 		vertexArray.addVertexBuffer(vertexBuffer);
 		
 		int indices[] = { 0, 1, 2 };
-		IndexBuffer indexBuffer = new IndexBuffer(indices, indices.length);
+		int indices1[] = { 0, 1, 2, 2, 3, 0 };
+		IndexBuffer indexBuffer = new IndexBuffer(indices1, indices1.length);
 		vertexArray.setIndexBuffer(indexBuffer);
 	
-		String vertexSrc = "#version 330 core\r\n"
-				+ "			\r\n"
-				+ "			layout(location = 0) in vec3 a_Position;\r\n"
-				+ "			layout(location = 1) in vec4 a_Color;\r\n"
-				+ "			uniform mat4 u_ViewProjection;\r\n"
-				+ "			uniform mat4 u_Transform;\r\n"
-				+ "			out vec3 v_Position;\r\n"
-				+ "			out vec4 v_Color;\r\n"
-				+ "			void main()\r\n"
-				+ "			{\r\n"
-				+ "				v_Position = a_Position;\r\n"
-				+ "				v_Color = a_Color;\r\n"
-				+ "				gl_Position = u_Transform * vec4(a_Position, 1.0);	\r\n"
-				+ "			}";
-		
-		String fragmentSrc = "#version 330 core\r\n"
-				+ "			\r\n"
-				+ "			layout(location = 0) out vec4 color;\r\n"
-				+ "			in vec3 v_Position;\r\n"
-				+ "			in vec4 v_Color;\r\n"
-				+ "			void main()\r\n"
-				+ "			{\r\n"
-				+ "				color = vec4(v_Position * 0.5 + 0.5, 1.0);\r\n"
-				+ "				color = v_Color;\r\n"
-				+ "			}";
 	
-	
-		shader = new Shader(vertexSrc, fragmentSrc);
+		shader = new Shader(Shader.loadShader("vertex.vs"), Shader.loadShader("fragment.fs"));
 		
 		camera = new Camera();
-		camera.setPosition(new Vec3f(-10f, -1f, -1f));
+		
+		transform = new Mat4f().Identity();
 	}
 
 	@Override
@@ -93,13 +79,15 @@ public class ExampleLayer extends Layer {
 
 	@Override
 	public void onDetach() {
-		// TODO Auto-generated method stub
-		
+		Log.clientLog(this.getName() + " Detached");
 	}
 
 	@Override
 	public void onUpdate(float delta) {
-		
+		rot.setX(rot.getX() + delta * 0.01f);
+		rot.setY(rot.getY() + delta * 0.04f);
+		rot.setZ(rot.getZ() + delta * 0.06f);
+		transform.Rotation(rot);
 	}
 
 	@Override
@@ -110,7 +98,7 @@ public class ExampleLayer extends Layer {
 		Renderer.BeginScene(camera);
 		shader.bind();
 		shader.UploadUniformFloat3("u_Color", new Vec3f(0.5f, 0.2f, 0.7f));
-		Renderer.submit(shader, vertexArray, new Mat4f().Identity().translate(new Vec3f(0, 0, 0)));
+		Renderer.submit(shader, vertexArray, transform);
 		Renderer.EndScene();
 	}
 
