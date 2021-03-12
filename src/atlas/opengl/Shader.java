@@ -1,20 +1,43 @@
 package atlas.opengl;
 
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
+import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
+import static org.lwjgl.opengl.GL20.GL_LINK_STATUS;
+import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
+import static org.lwjgl.opengl.GL20.glAttachShader;
+import static org.lwjgl.opengl.GL20.glCompileShader;
+import static org.lwjgl.opengl.GL20.glCreateProgram;
+import static org.lwjgl.opengl.GL20.glCreateShader;
+import static org.lwjgl.opengl.GL20.glDeleteProgram;
+import static org.lwjgl.opengl.GL20.glDeleteShader;
+import static org.lwjgl.opengl.GL20.glDetachShader;
+import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
+import static org.lwjgl.opengl.GL20.glGetProgrami;
+import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
+import static org.lwjgl.opengl.GL20.glGetShaderi;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
+import static org.lwjgl.opengl.GL20.glLinkProgram;
+import static org.lwjgl.opengl.GL20.glShaderSource;
+import static org.lwjgl.opengl.GL20.glUniform1f;
+import static org.lwjgl.opengl.GL20.glUniform1i;
+import static org.lwjgl.opengl.GL20.glUniform2f;
+import static org.lwjgl.opengl.GL20.glUniform3f;
+import static org.lwjgl.opengl.GL20.glUniform4f;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
+import static org.lwjgl.opengl.GL20.glUseProgram;
 
 import java.nio.FloatBuffer;
 
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
+
+import atlas.math.Mat4f;
+import atlas.math.Vec2f;
+import atlas.math.Vec3f;
+import atlas.math.Vec4f;
 
 public class Shader {
 	
-	private static FloatBuffer matrix3Buffer = BufferUtils.createFloatBuffer(9);
-	private static FloatBuffer matrix4Buffer = BufferUtils.createFloatBuffer(16);
+	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 	
 	private int rendererId;
 
@@ -74,31 +97,26 @@ public class Shader {
 		glUniform1f(location, value);
 	}
 	
-	public void UploadUniformFloat2(String name, Vector2f values) {
+	public void UploadUniformFloat2(String name, Vec2f values) {
 		int location = glGetUniformLocation(rendererId, name);
-		glUniform2f(location, values.x, values.y);
+		glUniform2f(location, values.getX(), values.getY());
 	}
 	
-	public void UploadUniformFloat3(String name, Vector3f values) {
+	public void UploadUniformFloat3(String name, Vec3f values) {
 		int location = glGetUniformLocation(rendererId, name);
-		glUniform3f(location, values.x, values.y, values.z);
+		glUniform3f(location, values.getX(), values.getY(), values.getZ());
 	}
 	
-	public void UploadUniformFloat4(String name, Vector4f values) {
+	public void UploadUniformFloat4(String name, Vec4f values) {
 		int location = glGetUniformLocation(rendererId, name);
-		glUniform4f(location, values.x, values.y, values.z, values.w);
+		glUniform4f(location, values.getX(), values.getY(), values.getZ(), values.getW());
 	}
 	
-	public void UploadUniformMat3(String name, Matrix3f matrix) {
+	public void UploadUniformMat4(String name, Mat4f matrix) {
 		int location = glGetUniformLocation(rendererId, name);
-		matrix3Buffer = matrix.get(matrix3Buffer);
-		glUniformMatrix3fv(location, false, matrix3Buffer);
-	}
-	
-	public void UploadUniformMat4(String name, Matrix4f matrix) {
-		int location = glGetUniformLocation(rendererId, name);
-		matrix4Buffer =  matrix.get(matrix4Buffer);
-		glUniformMatrix4fv(location, false, matrix4Buffer);
+		matrix.store(matrixBuffer);
+		matrixBuffer.flip();
+		glUniformMatrix4fv(location, false, matrixBuffer);
 	}
 	
 	public int getRendererId() {

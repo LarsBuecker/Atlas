@@ -1,14 +1,14 @@
 package atlas.renderer;
 
-import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 
+import atlas.math.Vec4f;
 import atlas.opengl.VertexArray;
 
 public class RendererAPI {
 
-	public static void setClearColor(Vector4f color) {
-		GL11.glClearColor(color.x, color.y, color.z, color.w);
+	public static void setClearColor(Vec4f color) {
+		GL11.glClearColor(color.getX(), color.getY(), color.getZ(), color.getW());
 	}
 	
 	public static void clear() {

@@ -17,7 +17,7 @@ import atlas.renderer.BufferLayout;
 public class VertexArray {
 	
 	private int rendererId;
-	private Vector<VertexBuffer> vertexBuffers;
+	private Vector<VertexBuffer> vertexBuffers = new Vector<VertexBuffer>();
 	private IndexBuffer indexBuffer;
 	
 	public static int ShaderDataTypeToOpenGLBaseType(ShaderDataType type) {

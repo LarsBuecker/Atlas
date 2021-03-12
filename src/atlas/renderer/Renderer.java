@@ -1,13 +1,13 @@
 package atlas.renderer;
 
-import org.joml.Matrix4f;
 
+import atlas.math.Mat4f;
 import atlas.opengl.Shader;
 import atlas.opengl.VertexArray;
 
 public class Renderer {
 
-	private static SceneData sceneData;
+	private static SceneData sceneData = new SceneData();
 	
 	public static void BeginScene(Camera camera) {
 		sceneData.ViewProjectionMatrix = camera.getViewProjectionMatrix();
@@ -17,7 +17,7 @@ public class Renderer {
 		
 	}
 	
-	public static void submit(Shader shader, VertexArray vertexArray, Matrix4f transform) {
+	public static void submit(Shader shader, VertexArray vertexArray, Mat4f transform) {
 		shader.bind();
 		shader.UploadUniformMat4("u_ViewProjection", sceneData.ViewProjectionMatrix);
 		shader.UploadUniformMat4("u_Transform", transform);

@@ -1,9 +1,9 @@
 package atlas.renderer;
 
-import org.joml.Matrix4f;
+import atlas.math.Mat4f;
 
 public class SceneData {
 	
-	public Matrix4f ViewProjectionMatrix;
+	public Mat4f ViewProjectionMatrix;
 	
 }
